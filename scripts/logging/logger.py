@@ -17,7 +17,7 @@ logging.trace = logging.DEBUG - 5
 logging.addLevelName(logging.DEBUG - 5, 'TRACE')
 
 
-class PachaiLogger(logging.getLoggerClass()):
+class MaphisLogger(logging.getLoggerClass()):
     def __init__(self, name):
         super().__init__(name)
 
@@ -26,7 +26,7 @@ class PachaiLogger(logging.getLoggerClass()):
             self._log(logging.trace, msg, args, **kwargs)
 
 
-logging.setLoggerClass(PachaiLogger)
+logging.setLoggerClass(MaphisLogger)
 
 _logger = logging.getLogger("maphis")
 _logger.setLevel(_cnst_.log_level)

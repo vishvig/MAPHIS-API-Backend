@@ -1,4 +1,5 @@
 import time
+import uuid
 import random
 from copy import deepcopy
 
@@ -96,3 +97,7 @@ class CommonUtils(object):
         if _input is None:
             return None
         return random.choice(_input)
+
+    @staticmethod
+    def generate_random_id():
+        return uuid.uuid4().hex
