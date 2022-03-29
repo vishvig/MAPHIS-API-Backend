@@ -6,7 +6,7 @@ from pydantic import BaseModel
 class AddUserRequest(BaseModel):
     username: str
     password: str
-    details: Optional
+    details: Optional[Dict] = dict()
 
 
 class DeleteUserRequest(BaseModel):
@@ -15,5 +15,9 @@ class DeleteUserRequest(BaseModel):
 
 class UpdateUserRequest(BaseModel):
     userid: str
-    password: Optional
-    details: Optional
+    password: Optional[Any] = None
+    details: Optional[Dict] = None
+
+
+class GetUserRequest(BaseModel):
+    userid: str

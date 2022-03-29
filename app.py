@@ -7,6 +7,7 @@ from scripts.constants.configurations import Service
 
 
 from scripts.services.sample import sample_router
+from scripts.services.user import user_router
 
 LOG = get_logger()
 
@@ -20,6 +21,7 @@ app.add_middleware(CORSMiddleware,
                    allow_headers=["*"])
 
 app.include_router(sample_router)
+app.include_router(user_router)
 
 service_obj = Service()
 

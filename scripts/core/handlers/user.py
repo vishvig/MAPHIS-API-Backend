@@ -3,8 +3,8 @@ from scripts.utils.common_utils import CommonUtils
 
 from scripts.constants.configurations import Db
 
-from scripts.errors.exceptions import UserAlreadyExistsException, MaphisException
-from scripts.errors.error_codes import ERR100
+from scripts.errors.users.exceptions import *
+from scripts.errors.users.error_codes import *
 
 
 class UserHandler(object):
@@ -22,7 +22,7 @@ class UserHandler(object):
                                             collection_name=self.collection_name,
                                             query=dict(username=request_data.username))
             if mongo_data is not None:
-                raise UserAlreadyExistsException(ERR100.format(request_data.username))
+                raise UserAlreadyExistsException(USR001.format(request_data.username))
             _id = self._cu_.generate_random_id()
             data['_id'] = _id
             data['username'] = request_data.username
@@ -31,17 +31,17 @@ class UserHandler(object):
             self.conn.insert_one(database_name=self.db_name,
                                  collection_name=self.collection_name,
                                  data=data)
-            return True
-        except MaphisException as e:
-            raise MaphisException(e)
+            return dict(userid=_id)
+        except UserAlreadyExistsException as e:
+            raise UserAlreadyExistsException(e)
         except Exception as e:
             raise Exception(f"Faced an issue when adding the user: {e}")
 
-    def delete_user(self, request_data):
+    def delete_user(self, userid):
         try:
             self.conn.delete_one(database_name=self.db_name,
                                  collection_name=self.collection_name,
-                                 query=dict(_id=request_data.userid))
+                                 query=dict(_id=userid))
             return True
         except Exception as e:
             raise Exception(f"Faced an issue when deleting the user: {e}")
@@ -58,7 +58,19 @@ class UserHandler(object):
             self.conn.update_one(database_name=self.db_name,
                                  collection_name=self.collection_name,
                                  query=dict(_id=request_data.userid),
-                                 data=dict())
+                                 data=data)
             return True
+        except Exception as e:
+            raise Exception(f"Faced an issue when updating the user: {e}")
+
+    def get_user(self, user_id):
+        try:
+            response = dict()
+            data = self.conn.find_one(database_name=self.db_name,
+                                      collection_name=self.collection_name,
+                                      query=dict(_id=user_id))
+            response["username"] = data["username"]
+            response["details"] = data["details"]
+            return response
         except Exception as e:
             raise Exception(f"Faced an issue when updating the user: {e}")

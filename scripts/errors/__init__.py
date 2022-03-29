@@ -1,0 +1,2 @@
+class MaphisException(Exception):
+    pass

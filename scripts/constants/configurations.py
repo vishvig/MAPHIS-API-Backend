@@ -37,3 +37,4 @@ class Db:
     mongo_db_host = parser.get("DB", "mongo_db_host", fallback="localhost").split(',')
     mongo_db_user = parser.get("DB", "mongo_db_user")
     mongo_db_password = parser.get("DB", "mongo_db_password")
+    mongo_db_auth_db = parser.get("DB", "mongo_auth_db", fallback="admin")

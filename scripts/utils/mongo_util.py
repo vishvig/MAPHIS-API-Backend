@@ -7,8 +7,10 @@ from typing import Dict, List, Optional
 
 from pymongo import MongoClient
 
-from scripts.errors.exceptions.db.mongo import *
 from scripts.constants.configurations import Db
+
+from scripts.errors.db.mongo.exceptions import *
+from scripts.errors.db.mongo.error_codes import *
 
 
 class MongoCollectionClass:
@@ -17,16 +19,17 @@ class MongoCollectionClass:
         return "_id"
 
 
-class MongoConnect:
-    def __init__(self, hosts, username, password):
+class MongoConnect(object):
+    def __init__(self, hosts, username, password, auth_db):
         try:
             self.client = MongoClient(hosts,
                                       username=username,
                                       password=password,
-                                      ssl=True,
-                                      connect=True)
+                                      ssl=False,
+                                      connect=True,
+                                      authSource=auth_db)
         except Exception as e:
-            raise MongoConnectionException(e)
+            raise MongoConnectionException(MONGO001.format(e))
 
     def __del__(self):
         self.client.close()
@@ -45,7 +48,7 @@ class MongoConnect:
             response = collection.insert_one(data)
             return response.inserted_id
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
     def insert_many(
         self, database_name: str, collection_name: str, data: List
@@ -63,7 +66,7 @@ class MongoConnect:
             response = collection.insert_many(data)
             return response.inserted_ids
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
     def find(
         self,
@@ -105,7 +108,7 @@ class MongoConnect:
             cursor.close()
             return response
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
     def find_one(
         self,
@@ -122,7 +125,7 @@ class MongoConnect:
             response = collection.find_one(query, filter_dict)
             return response
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
     def update_one(
         self,
@@ -149,7 +152,7 @@ class MongoConnect:
             )
             return response.modified_count
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
     def delete_many(
         self, database_name: str, collection_name: str, query: Dict
@@ -167,7 +170,7 @@ class MongoConnect:
             response = collection.delete_many(query)
             return response.deleted_count
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
     def delete_one(
         self, database_name: str, collection_name: str, query: Dict
@@ -185,7 +188,7 @@ class MongoConnect:
             response = collection.delete_one(query)
             return response.deleted_count
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
     def distinct(
         self,
@@ -207,7 +210,10 @@ class MongoConnect:
             response = collection.distinct(query_key, filter_json)
             return response
         except Exception as e:
-            raise MongoQueryException(e)
+            raise MongoQueryException(MONGO002.format(e))
 
 
-mongo_conn = MongoConnect(hosts=Db.mongo_db_host, username=Db.mongo_db_user, password=Db.mongo_db_password)
+mongo_conn = MongoConnect(hosts=Db.mongo_db_host,
+                          username=Db.mongo_db_user,
+                          password=Db.mongo_db_password,
+                          auth_db=Db.mongo_db_auth_db)
