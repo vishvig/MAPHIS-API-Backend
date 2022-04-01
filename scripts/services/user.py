@@ -23,7 +23,7 @@ user_handler = UserHandler()
 user_router = APIRouter(prefix='/user')
 
 
-@user_router.put('/add', tags=["user"])
+@user_router.post('/add', tags=["user"])
 async def add_user(request_data: AddUserRequest):
     try:
         response_json = user_handler.add_user(request_data=request_data)

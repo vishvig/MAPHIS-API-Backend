@@ -25,7 +25,7 @@ class UserHandler(object):
                 raise UserAlreadyExistsException(USR001.format(request_data.username))
             _id = self._cu_.generate_random_id()
             data['_id'] = _id
-            data['username'] = request_data.username
+            data['email'] = request_data.email
             data['password'] = request_data.password
             data['details'] = request_data.details
             self.conn.insert_one(database_name=self.db_name,
@@ -69,7 +69,7 @@ class UserHandler(object):
             data = self.conn.find_one(database_name=self.db_name,
                                       collection_name=self.collection_name,
                                       query=dict(_id=user_id))
-            response["username"] = data["username"]
+            response["email"] = data["email"]
             response["details"] = data["details"]
             return response
         except Exception as e:
