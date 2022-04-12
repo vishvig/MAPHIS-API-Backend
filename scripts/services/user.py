@@ -1,5 +1,6 @@
 # Importing 3rd party API hosting and validation packages
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
 # Importing general utilities for logging and validation
@@ -46,11 +47,9 @@ async def add_user(request_data: AddUserRequest):
         )
     except Exception as e:
         LOG.error(f"There was an issue when processing the request: {e}")
-        return DefaultFailureResponse(
-            status="failed",
-            message="There was an issue when processing the request",
-            error=e,
-        )
+        return JSONResponse(status_code=500, content={'status': "failed",
+                                                      'message': "There was an issue when processing the request",
+                                                      'error': e})
 
 
 @user_router.delete('/{userid}', tags=["user"])

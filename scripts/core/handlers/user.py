@@ -20,9 +20,9 @@ class UserHandler(object):
             data = dict()
             mongo_data = self.conn.find_one(database_name=self.db_name,
                                             collection_name=self.collection_name,
-                                            query=dict(username=request_data.username))
+                                            query=dict(username=request_data.email))
             if mongo_data is not None:
-                raise UserAlreadyExistsException(USR001.format(request_data.username))
+                raise UserAlreadyExistsException(USR001.format(request_data.email))
             _id = self._cu_.generate_random_id()
             data['_id'] = _id
             data['email'] = request_data.email
