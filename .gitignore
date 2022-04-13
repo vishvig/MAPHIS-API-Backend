@@ -132,4 +132,4 @@ dmypy.json
 .idea/*
 
 # adding logs directory as well
-.logs/*
+logs/*

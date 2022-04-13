@@ -21,3 +21,10 @@ class UpdateUserRequest(BaseModel):
 
 class GetUserRequest(BaseModel):
     userid: str
+
+
+class UserDetails(BaseModel):
+    firstName: str
+    lastName: str
+    occupation: Optional[str] = None
+    country: Optional[str] = None
