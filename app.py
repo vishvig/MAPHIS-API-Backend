@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 
 from scripts.logging.logger import get_logger
@@ -9,10 +10,13 @@ from scripts.constants.configurations import Service
 
 from scripts.services.sample import sample_router
 from scripts.services.user import user_router
+from scripts.services.auth import auth_router
 
 from scripts.schemas.responses import ErrorException
 
 LOG = get_logger()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth')
 
 app = FastAPI(title="MAPHIS backend services",
               version="0.1",
@@ -32,6 +36,7 @@ app.add_middleware(CORSMiddleware,
 
 app.include_router(sample_router)
 app.include_router(user_router)
+app.include_router(auth_router)
 
 service_obj = Service()
 
