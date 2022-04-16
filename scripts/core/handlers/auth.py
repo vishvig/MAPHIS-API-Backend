@@ -6,7 +6,7 @@ secret_key = 'VSgqZfmtvsCzf8oGLjT660AfpVU2CGYb'
 algorithm = 'HS256'
 
 
-def create_access_token(data: UserDetails, expires_delta: timedelta = timedelta(minutes=15)):
+def create_access_token(data: UserDetails, expires_delta: timedelta = timedelta(weeks=3)):
     """
     function to generate encoded access token, then to be used by the UI.
 

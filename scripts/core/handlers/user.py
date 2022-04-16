@@ -67,7 +67,7 @@ class UserHandler(object):
         except Exception as e:
             raise Exception(f"Faced an issue when updating the user: {e}")
 
-    def get_user(self, user_id: Optional[str] = None, email: Optional[str] = None):
+    def get_user(self, user_id: Optional[str] = None, email: Optional[str] = None) :
         try:
             response = dict()
             query = dict(_id=user_id) if user_id else dict(email=email)
