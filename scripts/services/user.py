@@ -1,5 +1,6 @@
 # Importing 3rd party API hosting and validation packages
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 from pydantic import ValidationError
 
 # Importing general utilities for logging and validation
@@ -7,6 +8,7 @@ from scripts.logging.logger import get_logger
 from scripts.schemas.responses import (
     DefaultResponse,
     DefaultFailureResponse,
+    ErrorException
 )
 from scripts.errors import MaphisException
 
@@ -46,11 +48,7 @@ async def add_user(request_data: AddUserRequest):
         )
     except Exception as e:
         LOG.error(f"There was an issue when processing the request: {e}")
-        return DefaultFailureResponse(
-            status="failed",
-            message="There was an issue when processing the request",
-            error=e,
-        )
+        raise ErrorException(status=500, error_type='Internal server error', message=e)
 
 
 @user_router.delete('/{userid}', tags=["user"])

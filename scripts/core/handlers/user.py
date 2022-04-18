@@ -24,9 +24,9 @@ class UserHandler(object):
             data = dict()
             mongo_data = self.conn.find_one(database_name=self.db_name,
                                             collection_name=self.collection_name,
-                                            query=dict(username=request_data.username))
+                                            query=dict(username=request_data.email))
             if mongo_data is not None:
-                raise UserAlreadyExistsException(USR001.format(request_data.username))
+                raise UserAlreadyExistsException(USR001.format(request_data.email))
             _id = self._cu_.generate_random_id()
             data['_id'] = _id
             data['email'] = request_data.email
@@ -67,7 +67,7 @@ class UserHandler(object):
         except Exception as e:
             raise Exception(f"Faced an issue when updating the user: {e}")
 
-    def get_user(self, user_id: Optional[str] = None, email: Optional[str] = None):
+    def get_user(self, user_id: Optional[str] = None, email: Optional[str] = None) :
         try:
             response = dict()
             query = dict(_id=user_id) if user_id else dict(email=email)
