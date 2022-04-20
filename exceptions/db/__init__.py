@@ -1,4 +1,4 @@
-from scripts.errors import MaphisException
+from exceptions import MaphisException
 
 
 class DbException(MaphisException):
