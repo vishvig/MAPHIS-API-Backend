@@ -5,8 +5,8 @@ import random
 from copy import deepcopy
 
 from datetime import datetime, timezone, timedelta
-from scripts.logging.logger import get_logger
-from scripts.constants.constants import CommonConstants
+from utils.logger_util import get_logger
+from constants.constants import CommonConstants
 
 LOG = get_logger()
 
