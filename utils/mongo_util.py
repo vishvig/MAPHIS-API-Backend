@@ -7,10 +7,10 @@ from typing import Dict, List, Optional
 
 from pymongo import MongoClient
 
-from scripts.constants.configurations import Db
+from constants.configurations import Db
 
-from scripts.errors.db.mongo.exceptions import *
-from scripts.errors.db.mongo.error_codes import *
+from exceptions.db.mongo.exceptions import *
+from exceptions.db.mongo.error_codes import *
 
 
 class MongoCollectionClass:

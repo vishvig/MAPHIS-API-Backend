@@ -1,9 +1,10 @@
+import jwt
 import time
 import uuid
 import random
 from copy import deepcopy
 
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from scripts.logging.logger import get_logger
 from scripts.constants.constants import CommonConstants
 
@@ -89,6 +90,11 @@ class CommonUtils(object):
         return datetime.fromtimestamp(epoch)
 
     @staticmethod
+    def get_timedelta(period, value):
+        kwargs = {period: value}
+        return timedelta(**kwargs)
+
+    @staticmethod
     def deep_copy(_input):
         return deepcopy(_input)
 
@@ -101,3 +107,11 @@ class CommonUtils(object):
     @staticmethod
     def generate_random_id():
         return uuid.uuid4().hex
+
+    @staticmethod
+    def jwt_encode(message, secret_key, algorithm):
+        return jwt.encode(message, secret_key, algorithm)
+
+    @staticmethod
+    def jwt_decode(message, secret_key, algorithm):
+        return jwt.decode(message, secret_key, algorithm)
