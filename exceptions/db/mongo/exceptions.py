@@ -1,4 +1,4 @@
-from scripts.errors.db.mongo import MongoException
+from exceptions.db.mongo import MongoException
 
 
 class MongoConnectionException(MongoException):

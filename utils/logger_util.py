@@ -4,7 +4,7 @@ import sys
 from logging import StreamHandler
 from logging.handlers import RotatingFileHandler
 
-from scripts.constants.configurations import Logger
+from constants.configurations import Logger
 
 # from scripts.logging import LoggerUtil
 
