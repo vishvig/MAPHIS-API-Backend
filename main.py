@@ -1,5 +1,6 @@
 import importlib
 import uvicorn
+from fastapi.staticfiles import StaticFiles
 
 from core import *
 from utils import *
@@ -29,6 +30,8 @@ app.add_middleware(CORSMiddleware,
                    allow_credentials=True,
                    allow_methods=["GET", "POST", "DELETE", "PUT"],
                    allow_headers=["*"])
+
+app.mount("/map-tiles", StaticFiles(directory="./assets/tiles"), name="map-tiles")
 
 
 for version in [i for i in os.listdir('core') if '__' not in i]:
