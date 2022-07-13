@@ -8,3 +8,4 @@ PyJWT == 2.3.0
 pymongo[srv]
 opencv-python==4.5.5.64
 aiofiles==0.8.0
+redis==4.3.4
