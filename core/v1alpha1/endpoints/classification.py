@@ -62,3 +62,16 @@ async def save_feature_by_id(request_data: SaveFeatureClassificationRequest):
         raise MaphisEndpointException(error_type=TYP001, message=e)
     except Exception as e:
         raise MaphisEndpointException(message=e)
+
+
+@router.post('/feature/classified', tags=tags)
+async def get_classified_features(request_data: FetchClassifiedFeatures):
+    try:
+        res = handler.get_classified_features(request_data=request_data)
+        return JSONResponse(content=res)
+    except UserNotValidException as e:
+        raise MaphisEndpointException(error_type=e.err_type, message=e.err_msg)
+    except MaphisException as e:
+        raise MaphisEndpointException(error_type=TYP001, message=e)
+    except Exception as e:
+        raise MaphisEndpointException(message=e)
