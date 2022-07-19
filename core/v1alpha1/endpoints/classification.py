@@ -64,7 +64,7 @@ async def save_feature_by_id(request_data: SaveFeatureClassificationRequest):
         raise MaphisEndpointException(message=e)
 
 
-@router.post('/feature/classified', tags=tags)
+@router.get('/feature/classified', tags=tags)
 async def get_classified_features(request_data: FetchClassifiedFeatures):
     try:
         res = handler.get_classified_features(request_data=request_data)
