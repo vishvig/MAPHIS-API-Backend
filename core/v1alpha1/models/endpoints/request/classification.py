@@ -1,28 +1,29 @@
 from ....models import *
 
 
-class StartClassifyRequest(BaseModel):
+class ClassifyBaseModel(BaseModel):
     user_id: str
     map_id: str
+
+
+class StartClassifyRequest(ClassifyBaseModel):
     reset: bool = False
 
 
-class NextFeatureRequest(BaseModel):
-    user_id: str
-    map_id: str
+class NextFeatureRequest(ClassifyBaseModel):
     current_feature: int
     save: bool = False
     content: Optional[Dict] = dict()
 
 
-class FeatureByIndexRequest(BaseModel):
-    user_id: str
-    map_id: str
+class FeatureByIndexRequest(ClassifyBaseModel):
     feature_index: int
 
 
-class SaveFeatureClassificationRequest(BaseModel):
-    user_id: str
-    map_id: str
+class SaveFeatureClassificationRequest(ClassifyBaseModel):
     feature_index: int
     content: Optional[Dict] = dict()
+
+
+class FetchClassifiedFeatures(ClassifyBaseModel):
+    pass
