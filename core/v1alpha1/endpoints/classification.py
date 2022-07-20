@@ -65,9 +65,9 @@ async def save_feature_by_id(request_data: SaveFeatureClassificationRequest):
 
 
 @router.get('/feature/classified', tags=tags)
-async def get_classified_features(request_data: FetchClassifiedFeatures):
+async def get_classified_features(user_id: str, map_id: str):
     try:
-        res = handler.get_classified_features(request_data=request_data)
+        res = handler.get_classified_features(user_id=user_id, map_id=map_id)
         return JSONResponse(content=res)
     except UserNotValidException as e:
         raise MaphisEndpointException(error_type=e.err_type, message=e.err_msg)
