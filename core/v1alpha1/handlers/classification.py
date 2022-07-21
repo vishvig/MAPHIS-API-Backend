@@ -166,9 +166,7 @@ class ClassifyHandler(object):
         except Exception as e:
             raise Exception(f"Faced an issue when saving classification details: {e}")
 
-    def get_classified_features(self, request_data):
-        user_id = request_data.user_id
-        map_id = request_data.map_id
+    def get_classified_features(self, user_id, map_id):
         try:
             cache_id = f"{user_id}_{map_id}"
             classified_features = json.loads(self.cache.hget(name=cache_id, key='classified_features'))
