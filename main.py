@@ -1,6 +1,5 @@
 import importlib
 import uvicorn
-from fastapi.staticfiles import StaticFiles
 
 from core import *
 from utils import *
