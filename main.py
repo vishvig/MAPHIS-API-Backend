@@ -1,5 +1,7 @@
 import importlib
 import uvicorn
+from fastapi.staticfiles import StaticFiles
+from brotli_asgi import BrotliMiddleware
 
 from core import *
 from utils import *
@@ -29,9 +31,9 @@ app.add_middleware(CORSMiddleware,
                    allow_credentials=True,
                    allow_methods=["GET", "POST", "DELETE", "PUT"],
                    allow_headers=["*"])
+app.add_middleware(BrotliMiddleware)
 
-app.mount("/map-tiles", StaticFiles(directory="./assets/tiles"), name="map-tiles")
-
+app.mount("/static", StaticFiles(directory="./assets/"), name="static")
 
 for version in [i for i in os.listdir('core') if '__' not in i]:
     endpoint_modules = [i.rstrip('.py') for i in os.listdir(os.path.join('core', version, 'endpoints'))
