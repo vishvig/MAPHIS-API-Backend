@@ -121,7 +121,7 @@ class ClassifyHandler(object):
             this_feature = features[feature_index]
             total_features = len(features)
 
-            feature_id = features[feature_index]["properties"]["class"]
+            feature_id = features[feature_index]["properties"]["id"]
             res = self.conn.find_one(database_name=self.db_name,
                                      collection_name=self.classification_coll,
                                      query=dict(user_id=user_id,
@@ -148,7 +148,7 @@ class ClassifyHandler(object):
             cache_id = f"{user_id}_{map_id}"
             classified_features = json.loads(self.cache.hget(name=cache_id, key='classified_features'))
             features = json.loads(self.cache.hget(name=cache_id, key='features'))
-            feature_id = features[feature_index]["properties"]["class"]
+            feature_id = features[feature_index]["properties"]["id"]
 
             self.conn.update_one(database_name=self.db_name,
                                  collection_name=self.classification_coll,
