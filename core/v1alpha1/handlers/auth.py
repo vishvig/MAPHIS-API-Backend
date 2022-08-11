@@ -28,7 +28,7 @@ class AuthHandler(object):
             if not user_valid:
                 raise UserNotValidException(request.email)
             user_details = self._uh_.get_user(email=request.email)
-            to_encode = user_details['details'].copy()
+            to_encode = user_details.copy()
             expire = self._cu_.get_utc_datetime_now() + self._cu_.get_timedelta('weeks', 3)
             to_encode.update({'exp': expire})
             encoded_jwt = self._cu_.jwt_encode(to_encode, Encryption.api_secret_key, algorithm=Encryption.algorithm)
