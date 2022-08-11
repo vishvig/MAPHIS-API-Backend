@@ -9,3 +9,4 @@ pymongo[srv]
 opencv-python==4.5.5.64
 aiofiles==0.8.0
 redis==4.3.4
+python-multipart == 0.0.5

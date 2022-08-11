@@ -20,6 +20,7 @@ env_settings = EnvironmentSettings(
 class Service:
     port = env_settings.SERVICE_PORT
     host = env_settings.SERVICE_HOST
+    images_path = parser.get("SERVICE", "images_path", fallback=os.path.join('assets', 'tiles'))
 
 
 class Logger:
