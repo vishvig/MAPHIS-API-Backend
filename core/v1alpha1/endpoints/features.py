@@ -26,8 +26,8 @@ handler = FeatureHandler()
 #         raise MaphisEndpointException(message=e)
 
 
-@router.post('/upload/images/{map_id}/{x}/{y}/{z}', tags=tags)
-async def start_feature_classification(map_id, x, y, z, file: UploadFile = File(...)):
+@router.post('/upload/images/{map_id}/{z}/{x}/{y}', tags=tags)
+async def start_feature_classification(map_id, z, x, y, file: UploadFile = File(...)):
     try:
         contents = await file.read()
         res = handler.upload_single_image(map_id=map_id, x=x, y=y, z=z, contents=contents)
