@@ -49,10 +49,10 @@ async def start_feature_classification(map_id, z, x, y, file: UploadFile = File(
 #         raise MaphisEndpointException(message=e)
 
 
-@router.post('/features/{map_id}/insert', tags=tags)
-async def upload_map_features(map_id, request_data: FeatureCollection):
+@router.post('/{map_id}/{feature_class}/insert', tags=tags)
+async def upload_map_features(map_id, feature_class, request_data: FeatureCollection):
     try:
-        res = handler.upload_feature_list(feature_collection=request_data, map_id=map_id)
+        res = handler.upload_feature_list(feature_collection=request_data, map_id=map_id, feature_class=feature_class)
         return JSONResponse(content=res)
     except MaphisException as e:
         raise MaphisEndpointException(error_type=TYP001, message=e)
@@ -60,10 +60,10 @@ async def upload_map_features(map_id, request_data: FeatureCollection):
         raise MaphisEndpointException(message=e)
 
 
-@router.get('/features/{map_id}', tags=tags)
-async def upload_map_features(map_id):
+@router.get('/{map_id}/{feature_class}', tags=tags)
+async def upload_map_features(map_id, feature_class):
     try:
-        res = handler.get_map_features(map_id=map_id)
+        res = handler.get_map_features(map_id=map_id, feature_class=feature_class)
         return JSONResponse(content=res)
     except MapFeatureAlreadyExistsException as e:
         raise MaphisEndpointException(error_type=e.err_type, message=e.err_msg)

@@ -46,31 +46,35 @@ class FeatureHandler(object):
     #         self.upload_single_image(request_data=request_data.metadata[i], _file=file)
     #     return True
 
-    def upload_feature_list(self, map_id, feature_collection):
-        feature_collection_ids = dict(type=feature_collection.type,
-                                      features=list())
-        for i, feature in enumerate(feature_collection.features):
-            _feature = dict(type='Feature',
-                            properties=feature.properties,
-                            geometry=feature.geometry)
-            _feature['properties']['id'] = self._cu_.generate_random_id()
-            feature_collection_ids['features'].append(_feature)
-        existing_map = self.conn.find_one(database_name=self.db_name,
-                                          collection_name=self.shapes_coll,
-                                          query=dict(map_id=map_id))
-        if existing_map is not None:
-            raise MapFeatureAlreadyExistsException(map_id=map_id)
-        else:
-            data = dict(_id=self._cu_.generate_random_id(),
-                        map_id=map_id,
-                        content=feature_collection_ids)
-        self.conn.insert_one(database_name=self.db_name,
-                             collection_name=self.shapes_coll,
-                             data=data)
-        return True
+    def upload_feature_list(self, map_id, feature_collection, feature_class):
+        try:
+            feature_collection_ids = dict(type=feature_collection.type,
+                                          features=list())
+            for i, feature in enumerate(feature_collection.features):
+                _feature = dict(type='Feature',
+                                properties=feature.properties,
+                                geometry=feature.geometry)
+                _feature['properties']['id'] = self._cu_.generate_random_id()
+                feature_collection_ids['features'].append(_feature)
+            existing_map = self.conn.find_one(database_name=self.db_name,
+                                              collection_name=self.shapes_coll,
+                                              query=dict(map_id=map_id, feature_class=feature_class))
+            if existing_map is not None:
+                raise MapFeatureAlreadyExistsException(map_id=map_id)
+            else:
+                data = dict(_id=self._cu_.generate_random_id(),
+                            map_id=map_id,
+                            feature_class=feature_class,
+                            content=feature_collection_ids)
+            self.conn.insert_one(database_name=self.db_name,
+                                 collection_name=self.shapes_coll,
+                                 data=data)
+            return True
+        except Exception as e:
+            raise FeaturesException(e)
 
-    def get_map_features(self, map_id):
+    def get_map_features(self, map_id, feature_class):
         data = self.conn.find_one(database_name=self.db_name,
                                   collection_name=self.shapes_coll,
-                                  query=dict(map_id=map_id))
+                                  query=dict(map_id=map_id, feature_class=feature_class))
         return data['content']
