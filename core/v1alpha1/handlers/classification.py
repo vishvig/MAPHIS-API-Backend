@@ -9,7 +9,7 @@ from utils.redis_utils import RedisUtils
 from utils.common_utils import CommonUtils
 from utils.logger_util import get_logger
 
-from constants.configurations import Db
+from constants.configurations import MongoDB
 
 LOG = get_logger()
 
@@ -20,7 +20,7 @@ class ClassifyHandler(object):
 
         self.conn = mongo_conn
         self.cache = RedisUtils()
-        self.db_name = Db.mongo_db_name
+        self.db_name = MongoDB.name
         self.shapes_coll = "shapes"
         self.classification_coll = "classification"
 

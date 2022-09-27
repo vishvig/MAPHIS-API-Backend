@@ -4,7 +4,9 @@ from ..handlers.features import FeatureHandler
 from ..models.endpoints.request.features import *
 
 from exceptions.features.error_codes import *
-from exceptions.features.exceptions import MapFeatureAlreadyExistsException
+from exceptions.features.exceptions import MapFeatureAlreadyExistsException, FeaturesException,\
+    UnknownInsertQueryException
+
 
 from constants.configurations import Service
 
@@ -49,11 +51,16 @@ async def start_feature_classification(map_id, z, x, y, file: UploadFile = File(
 #         raise MaphisEndpointException(message=e)
 
 
-@router.post('/{map_id}/{feature_class}/insert', tags=tags)
-async def upload_map_features(map_id, feature_class, request_data: FeatureCollection):
+@router.post('/{map_id}/{feature_class}/insert/{insert_type}', tags=tags)
+async def upload_map_features(map_id, feature_class, insert_type, request_data: FeatureCollection):
     try:
-        res = handler.upload_feature_list(feature_collection=request_data, map_id=map_id, feature_class=feature_class)
+        res = handler.upload_feature_list(feature_collection=request_data,
+                                          map_id=map_id,
+                                          feature_class=feature_class,
+                                          insert_type=insert_type)
         return JSONResponse(content=res)
+    except UnknownInsertQueryException as e:
+        raise MaphisEndpointException(error_type=e.err_type, message=e.err_msg)
     except MaphisException as e:
         raise MaphisEndpointException(error_type=TYP001, message=e)
     except Exception as e:

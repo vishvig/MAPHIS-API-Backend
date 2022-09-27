@@ -3,7 +3,7 @@ from typing import Optional
 from utils.mongo_util import mongo_conn
 from utils.common_utils import CommonUtils
 
-from constants.configurations import Db
+from constants.configurations import MongoDB
 from constants.constants import Encryption
 
 from exceptions.users.exceptions import *
@@ -15,7 +15,7 @@ class UserHandler(object):
         self._cu_ = CommonUtils()
 
         self.conn = mongo_conn
-        self.db_name = Db.mongo_db_name
+        self.db_name = MongoDB.name
         self.collection_name = "users"
 
     def add_user(self, request_data):

@@ -7,3 +7,8 @@ class MapFeatureAlreadyExistsException(FeaturesException):
         self.err_type = TYP001
         self.err_msg = FTR001.format(map_id)
 
+
+class UnknownInsertQueryException(FeaturesException):
+    def __init__(self):
+        self.err_type = TYP001
+        self.err_msg = FTR002

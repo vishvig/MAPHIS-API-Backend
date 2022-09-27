@@ -7,7 +7,7 @@ from typing import Dict, List, Optional
 
 from pymongo import MongoClient
 
-from constants.configurations import Db
+from constants.configurations import MongoDB
 
 from exceptions.db.mongo.exceptions import *
 from exceptions.db.mongo.error_codes import *
@@ -213,7 +213,7 @@ class MongoConnect(object):
             raise MongoQueryException(MONGO002.format(e))
 
 
-mongo_conn = MongoConnect(hosts=Db.mongo_db_host,
-                          username=Db.mongo_db_user,
-                          password=Db.mongo_db_password,
-                          auth_db=Db.mongo_db_auth_db)
+mongo_conn = MongoConnect(hosts=MongoDB.host,
+                          username=MongoDB.user,
+                          password=MongoDB.password,
+                          auth_db=MongoDB.auth_db)
