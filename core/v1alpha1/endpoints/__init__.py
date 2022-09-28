@@ -7,4 +7,4 @@ this_version = 'v1alpha1'
 
 
 def api(module):
-    return os.path.join(f'/{this_version}', module)
+    return '/'.join([f'/{this_version}', module])

@@ -1,5 +1,5 @@
 from exceptions.db import DbException
 
 
-class MongoException(DbException):
+class RedisException(DbException):
     pass

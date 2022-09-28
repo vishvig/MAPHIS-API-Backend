@@ -20,6 +20,7 @@ env_settings = EnvironmentSettings(
 class Service:
     port = env_settings.SERVICE_PORT
     host = env_settings.SERVICE_HOST
+    images_path = parser.get("SERVICE", "images_path", fallback=os.path.join('assets', 'tiles'))
 
 
 class Logger:
@@ -32,9 +33,25 @@ class Logger:
     log_enable_traceback = parser.getboolean('LOG', 'enable_traceback', fallback=False)
 
 
-class Db:
-    mongo_db_name = parser.get("DB", "mongo_db_name")
-    mongo_db_host = parser.get("DB", "mongo_db_host", fallback="localhost").split(',')
-    mongo_db_user = parser.get("DB", "mongo_db_user")
-    mongo_db_password = parser.get("DB", "mongo_db_password")
-    mongo_db_auth_db = parser.get("DB", "mongo_auth_db", fallback="admin")
+class MongoDB:
+    name = parser.get("MONGO", "name")
+    host = parser.get("MONGO", "host", fallback="localhost").split(',')
+    user = parser.get("MONGO", "user")
+    password = parser.get("MONGO", "password")
+    auth_db = parser.get("MONGO", "auth_db", fallback="admin")
+
+
+class PostgresDB:
+    name = parser.get("POSTGRES", "name")
+    host = parser.get("POSTGRES", "host", fallback="localhost")
+    port = parser.getint("POSTGRES", "port", fallback=5432)
+    user = parser.get("POSTGRES", "user")
+    password = parser.get("POSTGRES", "password")
+    schema = parser.get("POSTGRES", "schema", fallback='v1')
+    conn_str = f'postgresql://{user}:{password}@{host}:{port}/{name}'
+
+
+class CacheDB:
+    host = parser.get("CACHE", "host", fallback='localhost')
+    port = parser.getint("CACHE", "port", fallback=6379)
+    db_name = parser.getint("CACHE", "db", fallback=0)

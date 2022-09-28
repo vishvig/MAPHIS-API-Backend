@@ -1,5 +1,5 @@
 from exceptions import MaphisException
 
 
-class UsersException(MaphisException):
+class FeaturesException(MaphisException):
     pass
