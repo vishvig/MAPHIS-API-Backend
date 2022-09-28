@@ -5,3 +5,6 @@ The backend code is deployed using a GitHub workflow to AWS Elastic Container Se
 
 
 Note: All the backend code is hosted in the AWS London region (eu-west-2)
+
+
+![image info](./docs/arch.png)
