@@ -11,10 +11,10 @@ RUN useradd -ms /bin/bash maphis
 RUN mkdir -p /opt/code
 
 # Giving permissions of working directory to non-root user
-RUN chown maphis /opt/code
+# RUN chown maphis /opt/code
 
 # Assuming non-root user permissions
-USER maphis
+# USER maphis
 
 # Switching the working directory to the created one from the previous step
 WORKDIR /opt/code
