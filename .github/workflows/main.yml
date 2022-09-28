@@ -3,6 +3,8 @@ name: Deploy to ECS
 on:
     release:
         types: [published]
+    push:
+        branches: [ "main" ]
 
 jobs:
     build:
