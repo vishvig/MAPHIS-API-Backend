@@ -15,6 +15,12 @@ handler = MetadataHandler()
 
 @router.get('/maps', tags=tags)
 async def get_maps():
+    """
+        Fetch available maps/regions supported on MAPHIS
+
+        Returns:
+            List of maps/regions
+    """
     try:
         res = handler.get_maps()
         return JSONResponse(content=res)
@@ -28,6 +34,12 @@ async def get_maps():
 
 @router.get('/feature/classes', tags=tags)
 async def get_feature_classes():
+    """
+        Fetch available feature classes supported my MAPHIS
+
+        Returns:
+            List of feature classes
+    """
     try:
         res = handler.get_feature_classes()
         return JSONResponse(content=res)

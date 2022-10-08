@@ -30,6 +30,19 @@ handler = FeatureHandler()
 
 @router.post('/upload/images/{map_id}/{z}/{x}/{y}', tags=tags)
 async def start_feature_classification(map_id, z, x, y, file: UploadFile = File(...)):
+    """
+    Endpoint to upload map/region tiles(images) after segmentation
+
+    Args:
+        map_id: ID of the map/region to which the tile belongs to
+        x: The x co-ordinate of the tile (upper left corner)
+        y: The y co-ordinate of the tile (upper left corner)
+        z: The zoom level of the tile/image
+        file: A bytes type object of the image
+
+    Returns:
+        Boolean status of file upload
+    """
     try:
         contents = await file.read()
         res = handler.upload_single_image(map_id=map_id, x=x, y=y, z=z, contents=contents)
@@ -53,6 +66,18 @@ async def start_feature_classification(map_id, z, x, y, file: UploadFile = File(
 
 @router.post('/{map_id}/{feature_class}/insert/{insert_type}', tags=tags)
 async def upload_map_features(map_id, feature_class, insert_type, request_data: FeatureCollection):
+    """
+    Endpoint to upload geoJSON metadata of the classified features
+
+    Args:
+        map_id: ID of the map/region to which the feature belongs to
+        feature_class: The feature class that the feature belongs to
+        insert_type: Supported values - append/replace
+        request_data(FeatureCollection): GeoJSON metadata of all the classified features
+
+    Returns:
+        Status of upload operation
+    """
     try:
         res = handler.upload_feature_list(feature_collection=request_data,
                                           map_id=map_id,
@@ -68,7 +93,17 @@ async def upload_map_features(map_id, feature_class, insert_type, request_data: 
 
 
 @router.get('/{map_id}/{feature_class}', tags=tags)
-async def upload_map_features(map_id, feature_class):
+async def get_map_features(map_id, feature_class):
+    """
+    Fetch the features belonging to a particular class in a particular region
+
+    Args:
+        map_id: ID of the map/region to which the feature belongs to
+        feature_class: The feature class that the feature belongs to
+
+    Returns:
+        The GeoJSON metadata of the features belonging to the queried feature class and region
+    """
     try:
         res = handler.get_map_features(map_id=map_id, feature_class=feature_class)
         return JSONResponse(content=res)
