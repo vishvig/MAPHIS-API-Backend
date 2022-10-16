@@ -1,5 +1,6 @@
 import pandas as pd
 import geopandas as gpd
+import psycopg2
 
 from utils import *
 from utils.mongo_util import mongo_conn
@@ -83,18 +84,26 @@ class FeatureHandler(object):
                             map_id=map_id,
                             feature_class=feature_class,
                             content=feature_collection_ids)
-                gdf.to_postgis(feature_class,
-                               self.engine,
-                               schema=self.psql_schema,
-                               index=False,
-                               if_exists='replace')
+                try:
+                    gdf.to_postgis(feature_class,
+                                   self.engine,
+                                   schema=self.psql_schema,
+                                   index=False,
+                                   if_exists='replace')
+                except Exception as e:
+                    print(f"Faced an issue when pushing data to PostgreSQL: {e}")
+                    pass
             elif insert_type == 'append':
                 data['content']['features'].extend(feature_collection_ids['features'])
-                gdf.to_postgis(feature_class,
-                               self.engine,
-                               schema=self.psql_schema,
-                               index=False,
-                               if_exists='append')
+                try:
+                    gdf.to_postgis(feature_class,
+                                   self.engine,
+                                   schema=self.psql_schema,
+                                   index=False,
+                                   if_exists='append')
+                except Exception as e:
+                    print(f"Faced an issue when pushing data to PostgreSQL: {e}")
+                    pass
             else:
                 raise UnknownInsertQueryException
             self.conn.update_one(database_name=self.db_name,

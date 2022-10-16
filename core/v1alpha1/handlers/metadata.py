@@ -1,15 +1,18 @@
 import os
 
 from utils import *
+from utils.mongo_util import mongo_conn
 
-from constants.configurations import Service
+from constants.configurations import MongoDB, Service
 
 from exceptions.features.exceptions import *
 
 
 class MetadataHandler(object):
     def __init__(self):
-        pass
+        self.conn = mongo_conn
+        self.db_name = MongoDB.name
+        self.shapes_coll = "shapes"
 
     @staticmethod
     def get_maps():
@@ -19,9 +22,11 @@ class MetadataHandler(object):
         except Exception as e:
             return e
 
-    @staticmethod
-    def get_feature_classes():
+    def get_feature_classes(self):
         try:
-            return ['imprint', 'text', 'vegetation']
+            data = self.conn.distinct(database_name=self.db_name,
+                                      collection_name=self.shapes_coll,
+                                      query_key="distinct")
+            return data
         except Exception as e:
             return e
