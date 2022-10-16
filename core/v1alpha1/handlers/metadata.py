@@ -26,7 +26,7 @@ class MetadataHandler(object):
         try:
             data = self.conn.distinct(database_name=self.db_name,
                                       collection_name=self.shapes_coll,
-                                      query_key="distinct")
+                                      query_key="feature_class")
             return data
         except Exception as e:
             return e
