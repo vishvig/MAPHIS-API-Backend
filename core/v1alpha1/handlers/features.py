@@ -38,14 +38,14 @@ class FeatureHandler(object):
     #     return io.TextIOWrapper(io.BytesIO(im.tobytes())), "image/jpg"
 
     @staticmethod
-    def upload_single_image(map_id, x, y, z, contents):
+    def upload_single_image(map_id, z, x, y, contents):
         try:
-            base_path = os.path.join(Service.images_path, map_id, x, y)
+            base_path = os.path.join(Service.images_path, map_id, z, x)
             try:
                 os.makedirs(base_path)
             except OSError as e:
                 pass
-            with open(os.path.join(base_path, f'{z}.jpg'), 'wb') as f:
+            with open(os.path.join(base_path, f'{y}.jpg'), 'wb') as f:
                 f.write(contents)
             return True
         except Exception as e:
