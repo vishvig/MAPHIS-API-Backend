@@ -3,9 +3,10 @@ from ....models import *
 
 class SingleImageUploadRequest(BaseModel):
     map_id: Any
+    z: Any
     x: Any
     y: Any
-    z: Any
+
 
 
 class MultipleImageUploadRequest(BaseModel):
