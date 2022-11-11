@@ -1,3 +1,6 @@
+import os
+import shutil
+
 import pandas as pd
 import geopandas as gpd
 import psycopg2
@@ -55,6 +58,35 @@ class FeatureHandler(object):
     #     for i, file in enumerate(files):
     #         self.upload_single_image(request_data=request_data.metadata[i], _file=file)
     #     return True
+
+    @staticmethod
+    def delete_single_image(map_id, z, x, y):
+        try:
+            base_path = os.path.join(Service.images_path, map_id, z, x)
+            os.remove(os.path.join(base_path, f'{y}.jpg'))
+            return True
+        except Exception as e:
+            return e
+
+    def delete_region(self, map_id):
+        try:
+            base_path = os.path.join(Service.images_path, map_id)
+            shutil.rmtree(base_path)
+            self.conn.delete_one(database_name=self.db_name,
+                                 collection_name=self.shapes_coll,
+                                 query=dict(map_id=map_id))
+            return True
+        except Exception as e:
+            return e
+
+    def delete_feature_from_region(self, map_id, feature_class):
+        try:
+            self.conn.delete_one(database_name=self.db_name,
+                                 collection_name=self.shapes_coll,
+                                 query=dict(map_id=map_id, feature_class=feature_class))
+            return True
+        except Exception as e:
+            return e
 
     def upload_feature_list(self, map_id, feature_collection, feature_class, insert_type):
         try:

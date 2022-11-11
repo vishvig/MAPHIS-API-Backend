@@ -29,7 +29,7 @@ handler = FeatureHandler()
 
 
 @router.post('/upload/images/{map_id}/{z}/{x}/{y}', tags=tags)
-async def start_feature_classification(map_id, z, x, y, file: UploadFile = File(...)):
+async def upload_single_tile(map_id, z, x, y, file: UploadFile = File(...)):
     """
     Endpoint to upload map/region tiles(images) after segmentation
 
@@ -106,6 +106,74 @@ async def get_map_features(map_id, feature_class):
     """
     try:
         res = handler.get_map_features(map_id=map_id, feature_class=feature_class)
+        return JSONResponse(content=res)
+    except MapFeatureAlreadyExistsException as e:
+        raise MaphisEndpointException(error_type=e.err_type, message=e.err_msg)
+    except MaphisException as e:
+        raise MaphisEndpointException(error_type=TYP001, message=e)
+    except Exception as e:
+        raise MaphisEndpointException(message=e)
+
+
+@router.delete('/delete/images/{map_id}/{z}/{x}/{y}', tags=tags)
+async def delete_single_tile(map_id, z, x, y):
+    """
+    Endpoint to delete map/region tiles(images)
+
+    Args:
+        map_id: ID of the map/region to which the tile belongs to
+        x: The x co-ordinate of the tile (upper left corner)
+        y: The y co-ordinate of the tile (upper left corner)
+        z: The zoom level of the tile/image
+
+    Returns:
+        Boolean status of file delete
+    """
+    try:
+        res = handler.delete_single_image(map_id=map_id, x=x, y=y, z=z)
+        return res
+    except MaphisException as e:
+        raise MaphisEndpointException(error_type=TYP001, message=e)
+    except Exception as e:
+        raise MaphisEndpointException(message=e)
+
+
+@router.delete('/{map_id}/{feature_class}', tags=tags)
+async def delete_map_features(map_id, feature_class):
+    """
+    Delete the features belonging to a particular class in a particular region
+
+    Args:
+        map_id: ID of the map/region to which the feature belongs to
+        feature_class: The feature class that the feature belongs to
+
+    Returns:
+        Boolean status of feature delete
+    """
+    try:
+        res = handler.delete_feature_from_region(map_id=map_id, feature_class=feature_class)
+        return JSONResponse(content=res)
+    except MapFeatureAlreadyExistsException as e:
+        raise MaphisEndpointException(error_type=e.err_type, message=e.err_msg)
+    except MaphisException as e:
+        raise MaphisEndpointException(error_type=TYP001, message=e)
+    except Exception as e:
+        raise MaphisEndpointException(message=e)
+
+
+@router.delete('/{map_id}', tags=tags)
+async def delete_region(map_id):
+    """
+    Delete the features belonging to a particular class in a particular region
+
+    Args:
+        map_id: ID of the map/region to which the feature belongs to
+
+    Returns:
+        Boolean status of region delete
+    """
+    try:
+        res = handler.delete_region(map_id=map_id)
         return JSONResponse(content=res)
     except MapFeatureAlreadyExistsException as e:
         raise MaphisEndpointException(error_type=e.err_type, message=e.err_msg)
